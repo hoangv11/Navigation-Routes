@@ -219,3 +219,122 @@ console.log("Order of Islands Visited:");
 optimalTour.path.forEach((island) => console.log(`- ${island}`));
 console.log("Experiences:");
 optimalTour.experiences.forEach((exp) => console.log(`- ${exp}`));
+
+//-------------Jayda Decker's Part(prompt 3)------------------------------//
+const resourceTimes = {
+  "sugarcane": 3,
+  "ginger": 2,
+  "gold": 4,
+  "kava": 2,
+  "coconuts": 1,
+  "timber": 5,
+  "coffee": 2,
+  "sandalwood": 3,
+  "coconut oil": 2,
+  "nickel": 4,
+  "chromite": 3,
+  "cobalt": 4,
+  "vanilla": 2,
+  "root crops": 2,
+  "limestone": 3
+};
+
+function getResourcePaths(sourceIsland, resource, numCanoes = 1) {
+  if (!islands[sourceIsland].resources.includes(resource)) {
+    return { success: false, error: `Resource ${resource} not found in ${sourceIsland}` };
+  }
+
+  const paths = [];
+  const targetIslands = Object.keys(islands).filter(island => 
+    island !== sourceIsland && !islands[island].resources.includes(resource)
+  );
+
+  function shortestPaths(start) {
+    const distances = Object.fromEntries(Object.keys(islands).map(island => [island, Infinity]));
+    const previous = {};
+    const pq = new PriorityQueue();
+
+    distances[start] = 0;
+    pq.enqueue(0, start);
+
+    while (!pq.isEmpty()) {
+      const current = pq.dequeue();
+      graph[current].forEach(route => {
+        const distance = distances[current] + route.time;
+        if (distance < distances[route.destination]) {
+          distances[route.destination] = distance;
+          previous[route.destination] = current;
+          pq.enqueue(distance, route.destination);
+        }
+      });
+    }
+    return { distances, previous };
+  }
+
+  const { distances, previous } = shortestPaths(sourceIsland);
+  let remaining = [...targetIslands];
+
+  for (let canoe = 0; canoe < numCanoes && remaining.length; canoe++) {
+    const canoePlan = { canoeId: canoe + 1, trips: [], totalTime: 0 };
+
+    while (remaining.length) {
+      const next = remaining.reduce((a, b) => (distances[a] < distances[b] ? a : b));
+      const path = [];
+      let current = next;
+
+      while (current) {
+        path.unshift(current);
+        current = previous[current];
+      }
+
+      canoePlan.trips.push({
+        path,
+        timeToDestination: distances[next],
+        plantingTime: resourceTimes[resource],
+        returnTime: distances[next]
+      });
+
+      canoePlan.totalTime += 2 * distances[next] + resourceTimes[resource];
+      remaining = remaining.filter(island => island !== next);
+    }
+
+    paths.push(canoePlan);
+  }
+
+  return {
+    success: true,
+    resource,
+    sourceIsland,
+    numCanoes,
+    paths,
+    totalTime: Math.max(...paths.map(p => p.totalTime))
+  };
+}
+
+function distributeResource(sourceIsland, resource, numCanoes = 1) {
+  const result = getResourcePaths(sourceIsland, resource, numCanoes);
+
+  if (!result.success) {
+    console.log(result.error);
+    return;
+  }
+
+  console.log(`\nDistribution Plan for ${resource} from ${sourceIsland} using ${numCanoes} canoe(s):`);
+  console.log(`Total time required: ${result.totalTime} units\n`);
+
+  result.paths.forEach(({ canoeId, trips, totalTime }) => {
+    console.log(`Canoe ${canoeId} route (Total time: ${totalTime}):`);
+    trips.forEach(({ path, timeToDestination, plantingTime, returnTime }, i) => {
+      console.log(`  Trip ${i + 1}:`);
+      console.log(`    Path: ${path.join(" → ")}`);
+      console.log(`    Travel time: ${timeToDestination}`);
+      console.log(`    Planting time: ${plantingTime}`);
+      console.log(`    Return time: ${returnTime}`);
+    });
+    console.log();
+  });
+}
+
+// Example usage
+console.log("\nTesting Resource Distribution:");
+distributeResource("Fiji", "sugarcane", 2);
