@@ -100,16 +100,19 @@ const graph = {
         visited.add(island);
   
         const allExperiences = islands[island].experiences.map(e => e.experience);
+        const experienceTimes = islands[island].experiences.map(e => e.time);
         const uniqueExperiences = [...new Set([...experiences, ...allExperiences])];
+        const newTimeSpent = timeSpent + experienceTimes.reduce((a, b) => a + b, 0);
+  
         if (!optimalRoute || uniqueExperiences.length > optimalRoute.experiences.length) {
-            optimalRoute = { island, timeSpent, experiences: uniqueExperiences, path };
+            optimalRoute = { island, timeSpent: newTimeSpent, experiences: uniqueExperiences, path };
         }
   
         for (const { destination, time } of graph[island]) {
             if (!visited.has(destination)) {
-                const newTimeSpent = timeSpent + time;
+                const totalTravelTime = newTimeSpent + time;
                 const newPath = [...path, destination];
-                pq.enqueue(newTimeSpent, { island: destination, timeSpent: newTimeSpent, experiences: uniqueExperiences, path: newPath });
+                pq.enqueue(totalTravelTime, { island: destination, timeSpent: totalTravelTime, experiences: uniqueExperiences, path: newPath });
             }
         }
     }
