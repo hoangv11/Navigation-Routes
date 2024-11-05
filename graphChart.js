@@ -1,76 +1,68 @@
-// Adjaceny List
-
 const graph = {
-    "Fiji": [
+  "Fiji": [
       { destination: "Vanuatu", time: 8, capacity: 500 },
       { destination: "Tonga", time: 12, capacity: 400 },
-    ],
-    "Vanuatu": [
+  ],
+  "Vanuatu": [
       { destination: "Fiji", time: 8, capacity: 500 },
       { destination: "Solomon Islands", time: 10, capacity: 300 },
       { destination: "New Caledonia", time: 6, capacity: 450 },
-    ],
-    "Solomon Islands": [
+  ],
+  "Solomon Islands": [
       { destination: "Vanuatu", time: 10, capacity: 300 },
       { destination: "New Caledonia", time: 9, capacity: 350 },
-    ],
-    "New Caledonia": [
+  ],
+  "New Caledonia": [
       { destination: "Vanuatu", time: 6, capacity: 450 },
       { destination: "Solomon Islands", time: 9, capacity: 350 },
       { destination: "Tonga", time: 14, capacity: 400 },
-    ],
-    "Tonga": [
+  ],
+  "Tonga": [
       { destination: "Fiji", time: 12, capacity: 400 },
       { destination: "New Caledonia", time: 14, capacity: 400 },
-    ],
-  };
-  
-  
-  // nodes (islands)
-  
-  
-  const islands = {
-    "Fiji": {
+  ],
+};
+
+const islands = {
+  "Fiji": {
       population: 928784,
       resources: ["sugarcane", "ginger", "gold"],
       experiences: [
-        { experience: "beach resorts", time: 2 },
-        { experience: "cultural festivals", time: 4 },
-        { experience: "surfing", time: 2 },
+          { experience: "beach resorts", time: 2 },
+          { experience: "cultural festivals", time: 4 },
+          { experience: "surfing", time: 2 },
       ],
-    },
-    "Vanuatu": {
+  },
+  "Vanuatu": {
       population: 332600,
       resources: ["kava", "coconuts", "timber"],
       experiences: [
-        { experience: "volcano tours", time: 4 },
-        { experience: "tribal ceremonies", time: 3 },
-        { experience: "island hiking", time: 2 },
+          { experience: "volcano tours", time: 4 },
+          { experience: "tribal ceremonies", time: 3 },
+          { experience: "island hiking", time: 2 },
       ],
-    },
-    "Soloman Islands": {
+  },
+  "Solomon Islands": {
       population: 825359,
       resources: ["coffee", "sandalwood", "coconut oil"],
       experiences: [{ experience: "scuba diving", time: 3 }],
-    },
-    "New Caledonia": {
+  },
+  "New Caledonia": {
       population: 293000,
       resources: ["nickel", "chromite", "cobalt"],
       experiences: [
-        { experience: "marine park", time: 2 },
-        { experience: "food testing", time: 4 },
-        { experience: "coral reef exploration", time: 4 },
-        { experience: "sailing", time: 2 },
+          { experience: "marine park", time: 2 },
+          { experience: "food tasting", time: 4 },
+          { experience: "coral reef exploration", time: 4 },
+          { experience: "sailing", time: 2 },
       ],
-    },
-    "Tonga": {
+  },
+  "Tonga": {
       population: 104597,
       resources: ["vanilla", "root crops", "limestone"],
       experiences: [
-        { experience: "whale wathcing", time: 2 },
-        { experience: "traditional dances", time: 4 },
+          { experience: "whale watching", time: 2 },
+          { experience: "traditional dances", time: 4 },
       ],
-    },
-  };
-  
-  
+  },
+};
